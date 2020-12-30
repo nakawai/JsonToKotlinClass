@@ -16,6 +16,7 @@ import wu.seal.jsontokotlin.feedback.dealWithException
 import wu.seal.jsontokotlin.interceptor.InterceptorManager
 import wu.seal.jsontokotlin.model.ConfigManager
 import wu.seal.jsontokotlin.model.UnSupportJsonException
+import wu.seal.jsontokotlin.model.classscodestruct.KotlinClass
 import wu.seal.jsontokotlin.ui.JsonInputDialog
 import wu.seal.jsontokotlin.utils.KotlinClassFileGenerator
 import wu.seal.jsontokotlin.utils.KotlinClassMaker
@@ -85,25 +86,35 @@ class GenerateTwoKotlinFilesAction : AnAction("Kotlin data class File from JSON"
             directory: PsiDirectory
     ) {
         val kotlinClass = KotlinClassMaker(className, json).makeKotlinClass()
-        val dataClassAfterApplyInterceptor =
-                kotlinClass.applyInterceptors(InterceptorManager.getEnabledKotlinDataClassInterceptors())
-        if (ConfigManager.isInnerClassModel) {
 
-            KotlinClassFileGenerator().generateSingleKotlinClassFile(
-                    packageDeclare,
-                    dataClassAfterApplyInterceptor,
-                    project,
-                    psiFileFactory,
-                    directory
-            )
+        val domainAndInfraKotlinClasses = mutableListOf(
+                // infra layer
+                kotlinClass.applyInterceptors(InterceptorManager.getEnabledKotlinDataClassInterceptors()),
+                // domain layer
+                kotlinClass.applyInterceptors(InterceptorManager.getEnabledKotlinDataClassInterceptors(withoutSuffix = true))
+        )
+
+        if (ConfigManager.isInnerClassModel) {
+            domainAndInfraKotlinClasses.forEach {
+                KotlinClassFileGenerator().generateSingleKotlinClassFile(
+                        packageDeclare = packageDeclare,
+                        kotlinClass = it,
+                        project = project,
+                        psiFileFactory = psiFileFactory,
+                        directory = directory
+                )
+            }
+
         } else {
-            KotlinClassFileGenerator().generateMultipleKotlinClassFiles(
-                    dataClassAfterApplyInterceptor,
-                    packageDeclare,
-                    project,
-                    psiFileFactory,
-                    directory
-            )
+            domainAndInfraKotlinClasses.forEach {
+                KotlinClassFileGenerator().generateMultipleKotlinClassFiles(
+                        kotlinClass = it,
+                        packageDeclare = packageDeclare,
+                        project = project,
+                        psiFileFactory = psiFileFactory,
+                        directory = directory
+                )
+            }
         }
     }
 }

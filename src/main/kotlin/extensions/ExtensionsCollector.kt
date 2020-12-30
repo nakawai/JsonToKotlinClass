@@ -25,4 +25,16 @@ object ExtensionsCollector {
             ForceInitDefaultValueWithOriginJsonValueSupport,
             DisableDataClassSupport
     )
+
+    val extensionsWithoutSuffix = listOf(
+            KeepAnnotationSupport,
+            KeepAnnotationSupportForAndroidX,
+            PropertyAnnotationLineSupport,
+            ParcelableAnnotationSupport,
+            PropertyPrefixSupport,
+            PropertySuffixSupport,
+            PrimitiveTypeNonNullableSupport,
+            ForceInitDefaultValueWithOriginJsonValueSupport,
+            DisableDataClassSupport
+    )
 }

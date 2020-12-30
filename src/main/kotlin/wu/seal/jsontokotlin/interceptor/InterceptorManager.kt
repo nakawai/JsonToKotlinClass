@@ -24,7 +24,7 @@ import wu.seal.jsontokotlin.model.classscodestruct.KotlinClass
 
 object InterceptorManager {
 
-    fun getEnabledKotlinDataClassInterceptors(): List<IKotlinClassInterceptor<KotlinClass>> {
+    fun getEnabledKotlinDataClassInterceptors(withoutSuffix:Boolean = false): List<IKotlinClassInterceptor<KotlinClass>> {
 
         return mutableListOf<IKotlinClassInterceptor<KotlinClass>>().apply {
 
@@ -66,7 +66,7 @@ object InterceptorManager {
 
         }.apply {
             //add extensions's interceptor
-            addAll(ExtensionsCollector.extensions)
+            addAll(if(withoutSuffix) ExtensionsCollector.extensionsWithoutSuffix else ExtensionsCollector.extensions)
         }.apply {
             if (ConfigManager.enableMinimalAnnotation) {
                 add(MinimalAnnotationKotlinClassInterceptor())

@@ -93,15 +93,23 @@ class KotlinClassFileGenerator {
             directory: PsiDirectory
     ) {
         val kotlinFileContent = buildString {
+            // コメント
+            //appendln("/** $fileName Response mapping class */")
+
+            // パッケージ名
             if (packageDeclare.isNotEmpty()) {
                 append(packageDeclare)
                 append("\n\n")
             }
+
+            // import
             val importClassDeclaration = ClassImportDeclaration.getImportClassDeclaration()
             if (importClassDeclaration.isNotBlank()) {
                 append(importClassDeclaration)
                 append("\n\n")
             }
+
+            // クラス定義
             append(classCodeContent)
         }
         executeCouldRollBackAction(project) {
