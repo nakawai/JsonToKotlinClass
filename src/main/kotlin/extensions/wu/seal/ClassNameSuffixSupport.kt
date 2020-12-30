@@ -36,6 +36,7 @@ object ClassNameSuffixSupport : Extension() {
                 prefixJField.isEnabled = isSelectedAfterClick
             }()
             prefixJField()
+            prefixJField.text = "Response"
         }
     }
 
