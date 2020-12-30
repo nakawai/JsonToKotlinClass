@@ -1,6 +1,6 @@
 <idea-plugin>
-    <id>wu.seal.tool.jsontokotlin</id>
-    <name>JSON To Kotlin Class (JsonToKotlinClass)</name>
+    <id>wu.seal.tool.jsontokotlin.translator</id>
+    <name>JSON To Kotlin Class (Translator)</name>
     <vendor email="sealkingking@163.com" url="https://www.github.com/wuseal">Seal</vendor>
 
     <description><![CDATA[
@@ -72,22 +72,22 @@
     </extensions>
 
     <actions>
-        <!-- [Code]-[Generate]からの起動 -->
-        <action id="wu.seal.wu.seal.jsontokotlin.makekotlindata" class="wu.seal.jsontokotlin.InsertKotlinClassAction"
-                text="Kotlin Data Classes from JSON"
-                description="Convert a json string data into kotlin data class code">
-            <add-to-group group-id="GenerateGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt k"/>
-        </action>
+<!--        &lt;!&ndash; [Code]-[Generate]からの起動 &ndash;&gt;-->
+<!--        <action id="wu.seal.wu.seal.jsontokotlin.makekotlindata" class="wu.seal.jsontokotlin.InsertKotlinClassAction"-->
+<!--                text="Kotlin Data Classes from JSON"-->
+<!--                description="Convert a json string data into kotlin data class code">-->
+<!--            <add-to-group group-id="GenerateGroup" anchor="last"/>-->
+<!--            <keyboard-shortcut keymap="$default" first-keystroke="alt k"/>-->
+<!--        </action>-->
 
-        <!-- [New]からの起動 -->
-        <action id="wu.seal.wu.seal.jsontokotlin.GenerateKotlinFileAction"
-                class="wu.seal.jsontokotlin.GenerateKotlinFileAction"
-                text="Kotlin Data Class File from JSON"
-                icon="/icons/action.png"
-                description="Generate Kotlin data class File from JSON">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
-        </action>
+<!--        &lt;!&ndash; [New]からの起動 &ndash;&gt;-->
+<!--        <action id="wu.seal.wu.seal.jsontokotlin.GenerateKotlinFileAction"-->
+<!--                class="wu.seal.jsontokotlin.GenerateKotlinFileAction"-->
+<!--                text="Kotlin Data Class File from JSON"-->
+<!--                icon="/icons/action.png"-->
+<!--                description="Generate Kotlin data class File from JSON">-->
+<!--            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>-->
+<!--        </action>-->
 
         <!-- 改修したバージョン -->
         <action id="wu.seal.wu.seal.jsontokotlin.GenerateTwoKotlinFilesAction"
