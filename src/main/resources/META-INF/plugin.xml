@@ -72,6 +72,7 @@
     </extensions>
 
     <actions>
+        <!-- [Code]-[Generate]からの起動 -->
         <action id="wu.seal.wu.seal.jsontokotlin.makekotlindata" class="wu.seal.jsontokotlin.InsertKotlinClassAction"
                 text="Kotlin Data Classes from JSON"
                 description="Convert a json string data into kotlin data class code">
@@ -79,6 +80,7 @@
             <keyboard-shortcut keymap="$default" first-keystroke="alt k"/>
         </action>
 
+        <!-- [New]からの起動 -->
         <action id="wu.seal.wu.seal.jsontokotlin.GenerateKotlinFileAction"
                 class="wu.seal.jsontokotlin.GenerateKotlinFileAction"
                 text="Kotlin Data Class File from JSON"
@@ -87,5 +89,13 @@
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
 
+        <!-- 改修したバージョン -->
+        <action id="wu.seal.wu.seal.jsontokotlin.GenerateTwoKotlinFilesAction"
+                class="wu.seal.jsontokotlin.GenerateTwoKotlinFilesAction"
+                text="Kotlin Class Files (Domain and Infra layer) from JSON"
+                icon="/icons/action.png"
+                description="Kotlin Class Files (Domain and Infra layer) from JSON">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
     </actions>
 </idea-plugin>
