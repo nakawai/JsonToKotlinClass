@@ -104,6 +104,7 @@ class GenerateTwoKotlinFilesAction : AnAction("Kotlin data class File from JSON"
                         directory = directory
                 )
             }
+            generateTranslator(domainAndInfraKotlinClasses, packageDeclare, project, psiFileFactory, directory)
 
         } else {
             domainAndInfraKotlinClasses.forEach {
@@ -115,6 +116,24 @@ class GenerateTwoKotlinFilesAction : AnAction("Kotlin data class File from JSON"
                         directory = directory
                 )
             }
+            generateTranslator(domainAndInfraKotlinClasses, packageDeclare, project, psiFileFactory, directory)
+
         }
     }
+
+    private fun generateTranslator(domainAndInfraKotlinClasses: MutableList<KotlinClass>, packageDeclare: String, project: Project?, psiFileFactory: PsiFileFactory, directory: PsiDirectory) {
+        val responseClass = domainAndInfraKotlinClasses[0]
+        val domainClass = domainAndInfraKotlinClasses[1]
+
+        KotlinClassFileGenerator().generateTranslator(
+                packageDeclare = packageDeclare,
+                domainClass = domainClass,
+                responseClass = responseClass,
+                project = project,
+                psiFileFactory = psiFileFactory,
+                directory = directory
+        )
+    }
+
+
 }

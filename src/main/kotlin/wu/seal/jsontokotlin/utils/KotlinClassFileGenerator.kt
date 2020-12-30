@@ -5,6 +5,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFileFactory
 import wu.seal.jsontokotlin.model.classscodestruct.KotlinClass
 import wu.seal.jsontokotlin.filetype.KotlinFileType
+import wu.seal.jsontokotlin.model.classscodestruct.DataClass
 
 class KotlinClassFileGenerator {
 
@@ -83,6 +84,58 @@ class KotlinClassFileGenerator {
         }
         return renameMap
     }
+
+    fun generateTranslator(
+            packageDeclare: String,
+            domainClass: KotlinClass,
+            responseClass: KotlinClass,
+            project: Project?,
+            psiFileFactory: PsiFileFactory,
+            directory: PsiDirectory
+    ) {
+        val kotlinFileContent = buildString {
+            // コメント
+            //appendln("/** $fileName Response mapping class */")
+
+            // パッケージ名
+            if (packageDeclare.isNotEmpty()) {
+                append(packageDeclare)
+                append("\n\n")
+            }
+
+            // import
+            val importClassDeclaration = ClassImportDeclaration.getImportClassDeclaration()
+            if (importClassDeclaration.isNotBlank()) {
+                append(importClassDeclaration)
+                append("\n\n")
+            }
+
+            // クラス定義
+            appendln("object ${domainClass.name}Translator {")
+            appendln("fun translate(response: ${responseClass.name}): ${domainClass.name} {".addIndent(getIndent()))
+            appendln("return ${domainClass.name}(".addIndent(getIndent()))
+
+            (domainClass as? DataClass)?.let {
+                it.properties.forEachIndexed {index,  property ->
+                    append("${property.name} = response.${property.name}")
+
+                    if (index != it.properties.size - 1) append(",")
+                    appendln()
+                }
+            }
+            appendln(")")
+
+            appendln("}")
+
+            appendln("}")
+        }
+        executeCouldRollBackAction(project) {
+            val file =
+                    psiFileFactory.createFileFromText("${domainClass.name}Translator.kt", KotlinFileType(), kotlinFileContent)
+            directory.add(file)
+        }
+    }
+
 
     private fun generateKotlinClassFile(
             fileName: String,
