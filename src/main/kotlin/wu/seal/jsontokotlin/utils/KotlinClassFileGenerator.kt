@@ -94,8 +94,6 @@ class KotlinClassFileGenerator {
             directory: PsiDirectory
     ) {
         val kotlinFileContent = buildString {
-            // コメント
-            //appendln("/** $fileName Response mapping class */")
 
             // パッケージ名
             if (packageDeclare.isNotEmpty()) {
@@ -110,24 +108,33 @@ class KotlinClassFileGenerator {
                 append("\n\n")
             }
 
+            // コメント
+            appendln("/**")
+            appendln(" * [${responseClass.name}](infra層) を [${domainClass.name}](domain層) に変換する Translator")
+            appendln(" * TODO 自動生成されたコメントです。パッケージは適切な場所に移動してください。" )
+            appendln(" */")
+
             // クラス定義
             appendln("object ${domainClass.name}Translator {")
             appendln("fun translate(response: ${responseClass.name}): ${domainClass.name} {".addIndent(getIndent()))
-            appendln("return ${domainClass.name}(".addIndent(getIndent()))
+            appendln("return ${domainClass.name}(".addIndent(getIndent()).addIndent(getIndent()))
 
             (domainClass as? DataClass)?.let {
                 it.properties.forEachIndexed {index,  property ->
-                    append("${property.name} = response.${property.name}")
+                    val code = "${property.name} = response.${property.name}" +if (index != it.properties.size - 1) "," else ""
 
-                    if (index != it.properties.size - 1) append(",")
-                    appendln()
+                    appendln(code.addIndent(getIndent()).addIndent(getIndent()).addIndent(getIndent()))
                 }
             }
-            appendln(")")
+            appendln(")".addIndent(getIndent()).addIndent(getIndent()))
+
+            appendln("}".addIndent(getIndent()))
 
             appendln("}")
 
-            appendln("}")
+            appendln()
+
+            appendln("fun ${responseClass.name}.translate() = ${domainClass.name}Translator.translate(this)")
         }
         executeCouldRollBackAction(project) {
             val file =
@@ -146,8 +153,7 @@ class KotlinClassFileGenerator {
             directory: PsiDirectory
     ) {
         val kotlinFileContent = buildString {
-            // コメント
-            //appendln("/** $fileName Response mapping class */")
+
 
             // パッケージ名
             if (packageDeclare.isNotEmpty()) {
@@ -161,6 +167,12 @@ class KotlinClassFileGenerator {
                 append(importClassDeclaration)
                 append("\n\n")
             }
+            // コメント
+            appendln("/**")
+            append(" * ")
+            appendln(if(fileName.endsWith("Response")) "${fileName.replace("Response", "")} 取得APIのレスポンスにマッピングされるクラス" else "$fileName のドメインモデル" )
+            appendln(" * TODO 自動生成されたコメントです。パッケージは適切な場所に移動してください。" )
+            appendln(" */")
 
             // クラス定義
             append(classCodeContent)

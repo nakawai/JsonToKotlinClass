@@ -24,6 +24,7 @@ object ClassNameSuffixSupport : Extension() {
     override fun createUI(): JPanel {
 
         return horizontalLinearLayout {
+            setConfig(suffixKey, "Response")
             val prefixJField = textInput(getConfig(suffixKey), getConfig(suffixKeyEnable).toBoolean()) {
                 if (getConfig(suffixKeyEnable).toBoolean()) {
                     setConfig(suffixKey, it.text)
@@ -36,7 +37,6 @@ object ClassNameSuffixSupport : Extension() {
                 prefixJField.isEnabled = isSelectedAfterClick
             }()
             prefixJField()
-            prefixJField.text = "Response"
         }
     }
 
