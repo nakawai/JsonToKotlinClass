@@ -20,11 +20,11 @@ apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.intellij'
 
 group 'wu.seal'
-version '3.6.1'
+version '3.6.1ddd-alpha1'
 
 intellij {
     version '2017.1'
-    pluginName 'JsonToKotlinClass'
+    pluginName 'JsonToKotlinClass with Translator'
 }
 
 patchPluginXml {
